@@ -6,7 +6,10 @@ services:
     build: .
     hostname: api01
     environment:
-      - DB_HOSTNAME=db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=rinha
+      - POSTGRES_HOST=db
       - PORT=3000
     ports:
       - "3001:3000"
@@ -22,7 +25,10 @@ services:
     <<: *api
     hostname: api02
     environment:
-      - DB_HOSTNAME=db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=rinha
+      - POSTGRES_HOST=db
       - PORT=3000
     ports:
       - "3002:3000"

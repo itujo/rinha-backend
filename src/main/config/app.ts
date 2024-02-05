@@ -3,7 +3,7 @@ import path from "path";
 import { TemplatedApp } from "uWebSockets.js";
 
 export async function setupRoutes(app: TemplatedApp) {
-	app.get("/", (res, req) => {
+	app.get("/", (res) => {
 		res.writeStatus("200").end("ok");
 	});
 
