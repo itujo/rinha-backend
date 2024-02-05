@@ -1,5 +1,5 @@
 import { TemplatedApp } from "uWebSockets.js";
-import { getHttpError } from "../../application/helpers";
+import { getHttpError } from "../../infra/helpers";
 import { makeTransactionController } from "../factories/application/controllers";
 
 export default async (app: TemplatedApp): Promise<void> => {

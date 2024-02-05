@@ -1,4 +1,7 @@
-import { BadRequestError, NotFoundError } from "../../application/errors";
+import {
+	NotFoundError,
+	UnprocessableEntityError,
+} from "../../application/errors";
 import { BaseService } from "../../application/helpers";
 import {
 	BalanceRepository,
@@ -22,7 +25,7 @@ export class TransactionService extends BaseService {
 		transaction: { amount: number; type: string; description: string },
 	) {
 		const cliente = await this.clientRepository.findClientById(clientId);
-		if (!cliente || !cliente.saldos) {
+		if (!cliente?.saldos) {
 			this.log("error", "could not find client with this id", { clientId });
 			throw new NotFoundError("Cliente não encontrado");
 		}
@@ -36,7 +39,7 @@ export class TransactionService extends BaseService {
 				saldos: cliente.saldos,
 			});
 
-			throw new BadRequestError("Saldo insuficiente para débito");
+			throw new UnprocessableEntityError("Saldo insuficiente para débito");
 		}
 
 		const novoSaldo =
@@ -52,6 +55,8 @@ export class TransactionService extends BaseService {
 			tipo: transaction.type,
 			valor: transaction.amount,
 		});
+
+		this.log("debug", "will update balance");
 
 		await this.balanceRepository.updateBalanceByClientId(clientId, novoSaldo);
 

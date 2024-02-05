@@ -2,9 +2,8 @@ import { HttpRequest, HttpResponse } from "uWebSockets.js";
 import { ZodError } from "zod";
 import { TransactionService } from "../../domain/services";
 import { TransactionSchema } from "../../domain/validation/schemas";
+import { ok } from "../../infra/helpers";
 import { readJson } from "../../infra/utils";
-import { BadRequestError } from "../errors";
-import { ok } from "../helpers";
 
 export class TransactionController {
 	constructor(private readonly transactionService: TransactionService) {}
