@@ -44,7 +44,7 @@ export const getHttpError = (res: HttpResponse, error: errorTypes) => {
 	if (error instanceof ZodError) {
 		res.cork(() => {
 			res
-				.writeStatus("400")
+				.writeStatus("422")
 				.writeHeader("Content-Type", "application/json")
 				.end(
 					JSON.stringify({
@@ -58,7 +58,7 @@ export const getHttpError = (res: HttpResponse, error: errorTypes) => {
 	} else {
 		res.cork(() => {
 			res
-				.writeStatus(`${error.statusCode || 500}`)
+				.writeStatus(`${error.statusCode || 422}`)
 				.writeHeader("Content-Type", "application/json")
 				.end(
 					JSON.stringify({

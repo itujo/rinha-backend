@@ -47,16 +47,12 @@ export class TransactionService extends BaseService {
 				? cliente.saldos.valor + transaction.amount
 				: cliente.saldos.valor - transaction.amount;
 
-		this.log("debug", "new balance", { novoSaldo });
-
 		await this.transactionRepository.create({
 			clienteId: clientId,
 			descricao: transaction.description,
 			tipo: transaction.type,
 			valor: transaction.amount,
 		});
-
-		this.log("debug", "will update balance");
 
 		await this.balanceRepository.updateBalanceByClientId(clientId, novoSaldo);
 
