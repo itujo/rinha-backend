@@ -1,14 +1,11 @@
-import { eq } from "drizzle-orm";
-import { db, saldos } from "../database";
+import { sql } from "../database";
 
 export class BalanceRepository {
 	async updateBalanceByClientId(clientId: number, newBalance: number) {
-		const [balance] = await db
-			.update(saldos)
-			.set({ valor: newBalance })
-			.where(eq(saldos.clienteId, clientId))
-			.returning();
-
-		return balance;
+		await sql`
+			UPDATE saldos
+			SET valor = ${newBalance}
+			WHERE cliente_id = ${clientId};
+		`;
 	}
 }

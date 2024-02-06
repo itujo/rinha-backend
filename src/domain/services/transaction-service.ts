@@ -22,21 +22,21 @@ export class TransactionService extends BaseService {
 
 	async makeTransaction(
 		clientId: number,
-		transaction: { amount: number; type: string; description: string },
+		transaction: { amount: number; type: "c" | "d"; description: string },
 	) {
 		const cliente = await this.clientRepository.findClientById(clientId);
-		if (!cliente?.saldos) {
+		if (!cliente) {
 			this.log("error", "could not find client with this id", { clientId });
 			throw new NotFoundError("Cliente não encontrado");
 		}
 
 		if (
 			transaction.type === "d" &&
-			cliente.saldos.valor - transaction.amount < -cliente.limite
+			cliente.saldo - transaction.amount < -cliente.limite
 		) {
 			this.log("error", "client has insufficient funds", {
 				clientId,
-				saldos: cliente.saldos,
+				saldo: cliente.saldo,
 			});
 
 			throw new UnprocessableEntityError("Saldo insuficiente para débito");
@@ -44,8 +44,8 @@ export class TransactionService extends BaseService {
 
 		const novoSaldo =
 			transaction.type === "c"
-				? cliente.saldos.valor + transaction.amount
-				: cliente.saldos.valor - transaction.amount;
+				? cliente.saldo + transaction.amount
+				: cliente.saldo - transaction.amount;
 
 		await this.transactionRepository.create({
 			clienteId: clientId,

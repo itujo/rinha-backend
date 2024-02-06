@@ -29,7 +29,7 @@ export class StatementService extends BaseService {
 
 		return {
 			saldo: {
-				total: client.saldos.valor,
+				total: client.saldo,
 				data_extrato: new Date().toISOString(),
 				limite: client.limite,
 			},

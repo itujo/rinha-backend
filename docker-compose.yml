@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   api01: &api
-    # image: zanfranceschi/rinha-2024q1-crebito
+    #image: itujo/rinha-backend-node-uws:latest    
     build: .
     hostname: api01
     environment:

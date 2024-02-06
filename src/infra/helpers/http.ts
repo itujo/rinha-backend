@@ -1,5 +1,4 @@
 import { HttpResponse } from "uWebSockets.js";
-import { ZodError } from "zod";
 import {
 	BadRequestError,
 	ForbiddenError,
@@ -41,31 +40,15 @@ export const noContent = () => (res: HttpResponse) => {
 };
 
 export const getHttpError = (res: HttpResponse, error: errorTypes) => {
-	if (error instanceof ZodError) {
-		res.cork(() => {
-			res
-				.writeStatus("422")
-				.writeHeader("Content-Type", "application/json")
-				.end(
-					JSON.stringify({
-						error: {
-							code: "VALIDATION_FAILED",
-							details: error.issues,
-						},
-					}),
-				);
-		});
-	} else {
-		res.cork(() => {
-			res
-				.writeStatus(`${error.statusCode || 422}`)
-				.writeHeader("Content-Type", "application/json")
-				.end(
-					JSON.stringify({
-						code: error?.code,
-						error: { ...error, message: error.message },
-					}),
-				);
-		});
-	}
+	res.cork(() => {
+		res
+			.writeStatus(`${error.statusCode || 422}`)
+			.writeHeader("Content-Type", "application/json")
+			.end(
+				JSON.stringify({
+					code: error?.code,
+					error: { ...error, message: error.message },
+				}),
+			);
+	});
 };
